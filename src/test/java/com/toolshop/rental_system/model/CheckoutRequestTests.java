@@ -9,13 +9,11 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import jakarta.xml.bind.ValidationException;
-
 @SpringBootTest
 public class CheckoutRequestTests {
 
     @Test
-    public void testValidRequest() throws ValidationException {
+    public void testValidRequest() throws Exception {
         CheckoutRequest request = CheckoutRequest.builder().toolCode("ABC").rentalDayCount(1l).discountPercent(10l)
                 .checkoutDate(LocalDate.of(2024, 7, 26)).build();
 
@@ -28,7 +26,7 @@ public class CheckoutRequestTests {
         CheckoutRequest request = CheckoutRequest.builder().toolCode("ABC").rentalDayCount(0l).discountPercent(0l)
                 .checkoutDate(LocalDate.of(2024, 7, 26)).build();
 
-        Throwable exception = assertThrows(ValidationException.class, () -> {
+        Throwable exception = assertThrows(Exception.class, () -> {
             request.isValid();
         });
         assertEquals("Please provide a rental day count.", exception.getMessage());
@@ -40,7 +38,7 @@ public class CheckoutRequestTests {
         CheckoutRequest request = CheckoutRequest.builder().toolCode("ABC").rentalDayCount(2l).discountPercent(101l)
                 .checkoutDate(LocalDate.of(2024, 7, 26)).build();
 
-        Throwable exception = assertThrows(ValidationException.class, () -> {
+        Throwable exception = assertThrows(Exception.class, () -> {
             request.isValid();
         });
         assertEquals("Please enter a discount amount. Discount amount should be a whole number between 0-100.",
